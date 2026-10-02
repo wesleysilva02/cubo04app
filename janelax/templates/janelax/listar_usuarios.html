@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Usuários</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef6ff, #f8fbff);
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1d3557;
+            margin-top: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 14px 12px;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        th {
+            background: #edf5ff;
+            color: #1d3557;
+        }
+
+        tbody tr:hover {
+            background: #f8fbff;
+        }
+
+        .acoes {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn, .btn-danger, .btn-voltar {
+            display: inline-block;
+            text-decoration: none;
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-voltar {
+            margin-top: 22px;
+            background: #198754;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>usuarios cadastrados</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Telefone</th>
+                    <th>Idade</th>
+                    <th>Curso</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.nome }}</td>
+                        <td>{{ usuario.email }}</td>
+                        <td>{{ usuario.telefone }}</td>
+                        <td>{{ usuario.idade }}</td>
+                        <td>{{ usuario.curso }}</td>
+                        <td>
+                            <div class="acoes">
+                                <a href="{% url 'detalhe_usuario' usuario.id %}" class="btn">Detalhes</a>
+                                <a href="{% url 'editar_usuario' usuario.id %}" class="btn">Editar</a>
+                                <form method="post" action="{% url 'excluir_usuario' usuario.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-danger">Excluir</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6">Nenhum usuário cadastrado ainda.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="acoes" style="margin-top: 20px; justify-content: space-between; align-items: center;">
+            <a href="{% url 'home' %}" class="btn-voltar">cadastro</a>
+
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-danger">Sair</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

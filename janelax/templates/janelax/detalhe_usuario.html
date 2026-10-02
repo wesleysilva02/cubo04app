@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Usuário</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef5ff, #f9fbff);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 720px;
+            background: white;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1d3557;
+            margin-top: 0;
+        }
+
+        .info {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #dfe7f1;
+            border-radius: 12px;
+            background: #fafcff;
+        }
+
+        p {
+            margin: 12px 0;
+            font-size: 1.05rem;
+            color: #2d3748;
+        }
+
+        strong {
+            color: #1d3557;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 22px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Detalhes do Usuário</h1>
+
+        <div class="info">
+            <p><strong>Nome:</strong> {{ usuario.nome }}</p>
+            <p><strong>E-mail:</strong> {{ usuario.email }}</p>
+            <p><strong>Telefone:</strong> {{ usuario.telefone }}</p>
+            <p><strong>Idade:</strong> {{ usuario.idade }}</p>
+            <p><strong>Curso:</strong> {{ usuario.curso }}</p>
+            <p><strong>Observações:</strong> {{ usuario.observacoes|default:"Nenhuma observação." }}</p>
+        </div>
+
+        <a href="{% url 'listar_usuarios' %}" class="btn">Voltar para a lista</a>
+    </div>
+</body>
+</html>

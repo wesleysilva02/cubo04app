@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at top, #1d4ed8 0%, #0f172a 58%, #020817 100%);
+            padding: 24px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 520px;
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 22px;
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
+            padding: 28px 24px 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 18px;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            background: #edf2ff;
+            border-radius: 12px;
+            padding: 6px;
+            margin-top: auto;
+        }
+
+        .tab-button {
+            flex: 1;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            font-weight: 700;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 18px rgba(37,99,235,0.22);
+        }
+
+        .tab-button:hover {
+            filter: brightness(1.05);
+            background: linear-gradient(135deg, #37c11f, #288eae);
+        }
+
+        h2 {
+            text-align: center;
+            color: #1e3a8a;
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-size: clamp(1.5rem, 2vw, 2rem);
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #dfe7f1;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: #f8fafc;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 4px rgba(96,165,250,0.15);
+        }
+
+        .helptext {
+            display: block;
+            color: #64748b;
+            font-size: 0.8rem;
+            margin-top: 6px;
+        }
+
+        .errorlist {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            color: #b91c1c;
+            font-size: 0.85rem;
+        }
+
+        button {
+            margin-top: 8px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 12px 18px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s ease, filter 0.15s ease;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.03);
+            background: #37c11f;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="content">
+            <div id="login-tab" class="tab-panel {% if not is_register %}active{% endif %}">
+                <h2>logon</h2>
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">acessar</button>
+                </form>
+            </div>
+
+            <div id="register-tab" class="tab-panel {% if is_register %}active{% endif %}">
+                <h2>Cadastrar usuário</h2>
+                <form method="post" action="{% url 'cadastrar_usuario' %}">
+                    {% csrf_token %}
+                    {{ register_form.as_p }}
+                    <button type="submit">novo cadastro</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="Autenticação">
+            <button type="button" class="tab-button" data-tab="register-tab">Cadastrar</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabButton = document.querySelector('.tab-button');
+            const panels = document.querySelectorAll('.tab-panel');
+
+            function syncTabButton() {
+                const activePanel = document.querySelector('.tab-panel.active');
+                if (!tabButton || !activePanel) return;
+
+                if (activePanel.id === 'register-tab') {
+                    tabButton.textContent = 'voltar ao login';
+                    tabButton.dataset.tab = 'login-tab';
+                } else {
+                    tabButton.textContent = 'Cadastrar';
+                    tabButton.dataset.tab = 'register-tab';
+                }
+            }
+
+            if (tabButton) {
+                syncTabButton();
+
+                tabButton.addEventListener('click', function () {
+                    const target = this.dataset.tab;
+                    panels.forEach(function (panel) {
+                        panel.classList.toggle('active', panel.id === target);
+                    });
+                    syncTabButton();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

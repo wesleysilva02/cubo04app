@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Usuário</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef5ff, #f9fbff);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 760px;
+            background: white;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1d3557;
+            margin-top: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #edf2f7;
+            vertical-align: top;
+        }
+
+        td:first-child {
+            width: 32%;
+            font-weight: 700;
+            color: #1f2937;
+            background: #f8fbff;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d8e1ee;
+            border-radius: 10px;
+            outline: none;
+            font-size: 1rem;
+            background: #fff;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 22px;
+            background: linear-gradient(135deg, #198754, #157347);
+            color: white;
+            text-decoration: none;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Editar Usuário</h1>
+
+        <form method="post">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>Nome completo</td>
+                    <td><input type="text" name="nome" value="{{ usuario.nome }}" required></td>
+                </tr>
+                <tr>
+                    <td>E-mail</td>
+                    <td><input type="email" name="email" value="{{ usuario.email }}" required></td>
+                </tr>
+                <tr>
+                    <td>Telefone</td>
+                    <td><input type="tel" name="telefone" value="{{ usuario.telefone }}"></td>
+                </tr>
+                <tr>
+                    <td>Idade</td>
+                    <td><input type="number" name="idade" value="{{ usuario.idade }}" min="0"></td>
+                </tr>
+                <tr>
+                    <td>Curso</td>
+                    <td>
+                        <select name="curso" required>
+                            <option value="">Selecione</option>
+                            <option value="Python" {% if usuario.curso == 'Python' %}selected{% endif %}>Python</option>
+                            <option value="Django" {% if usuario.curso == 'Django' %}selected{% endif %}>Django</option>
+                            <option value="JavaScript" {% if usuario.curso == 'JavaScript' %}selected{% endif %}>JavaScript</option>
+                            <option value="UX/UI" {% if usuario.curso == 'UX/UI' %}selected{% endif %}>UX/UI</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Observações</td>
+                    <td><textarea name="observacoes">{{ usuario.observacoes }}</textarea></td>
+                </tr>
+            </table>
+
+            <button type="submit" class="btn">Salvar alterações</button>
+        </form>
+    </div>
+</body>
+</html>
